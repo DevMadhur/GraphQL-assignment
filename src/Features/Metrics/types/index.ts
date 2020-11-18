@@ -3,7 +3,7 @@ import { OptionTypeBase } from "react-select"
 export type Metric = {
     metric: string;
     at: string;
-    value: number | string;
+    value: number;
     unit: string;
 }
 
@@ -12,7 +12,7 @@ export type MetricsState = {
         [at: string]: Metric;
     };
     cardsValue: {
-        [metric: string]: number | string
+        [metric: string]: number
     },
     selected: string[];
 }
@@ -27,7 +27,7 @@ export type MetricsWithCardsValue = {
         [at: string]: Metric;
     };
     cardsValue: {
-        [metric: string]: number | string
+        [metric: string]: number
     }
 }
 
@@ -39,5 +39,5 @@ export type MetricsDataPayload = {
 
 export interface Option extends OptionTypeBase {
     label: string;
-    value: string | number;
+    value: string;
 }

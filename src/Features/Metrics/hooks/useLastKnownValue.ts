@@ -1,9 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useQuery } from 'urql';
 
+interface QueryResult {
+    getLastKnownMeasurement: {
+        value: number;
+    }
+}
+
+interface QueryArgs {
+    metricName: string
+}
+
 const useLastKnownValue = (metricName: string, currentValue: number) => {
     const [value, setValue] = useState(currentValue);
-    const [result] = useQuery({
+    const [result] = useQuery<QueryResult, QueryArgs>({
         query: `query ($metricName: String!) {
             getLastKnownMeasurement(metricName:$metricName){
               metric

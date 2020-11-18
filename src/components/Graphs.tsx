@@ -1,30 +1,20 @@
 import React from 'react';
-import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from 'recharts'
+import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts'
+import { useSelector } from 'react-redux'
 import { Grid, makeStyles } from '@material-ui/core';
+import { getMetrics, getSelectedItems } from '../Features/Metrics/selectors';
+import { COLORS, getAxisID, unitAdder } from '../utils';
 
-const getAxisID = (metric: string) => {
-    if (metric.toLowerCase().endsWith('pressure')) {
-        return 1
-    } else if (metric.toLowerCase().endsWith('temp')) {
-        return 2
-    }
-    return 0
-}
-
-export const getTimeKey = (time: string) => {
-    const hours = new Date(time).getHours() % 12 || 12;
-    const minutes = new Date(time).getMinutes()
-    return `${("0" + hours).slice(-2)}:${("0" + minutes).slice(-2)}`
-}
 
 const useStyles = makeStyles(theme => ({
     graphContainer: {
-        width: '90vw',
-        height: '90vh',
+        width: '91vw',
+        height: '93vh',
     },
 }));
 
-const COLORS = ['#003f5c', '#444e86', '#955196', '#dd5182', '#ff6e54', '#ffa600'];
+
+// const COLORS = ['#003f5c', '#444e86', '#955196', '#dd5182', '#ff6e54', '#ffa600'];
 
 type Unit = {
     enabled: boolean;
@@ -43,17 +33,21 @@ type IUnits = {
     [key in Key]: Unit;
 }
 
-const Chart: React.FC = () => {
-    const selectedItems = ["flareTemp", "casingPressure"];
+const Graphs: React.FC = () => {
+    const selectedItems = useSelector(getSelectedItems);
+    const metrics = useSelector(getMetrics);
     const classes = useStyles();
+    const data = Object.keys(metrics).map(key => metrics[key])
+
+
     const units: IUnits = {
         percentage: {
+            enabled: selectedItems.some((m: string) => getAxisID(m) === 0),
+            value: '%',
             dx: 10,
             dy: 10,
-            enabled: selectedItems.some((m: string) => getAxisID(m) === 0),
-            yAxisId: 0,
             angle: -90,
-            value: '%'
+            yAxisId: 0
         },
         pressure: {
             enabled: selectedItems.some((m: string) => getAxisID(m) === 1),
@@ -63,6 +57,7 @@ const Chart: React.FC = () => {
             angle: -90,
             fontSize: 12,
             yAxisId: 1,
+            tickFormatter: unitAdder
         },
         temperature: {
             enabled: selectedItems.some((m: string) => getAxisID(m) === 2),
@@ -80,11 +75,7 @@ const Chart: React.FC = () => {
             <LineChart
                 width={600}
                 height={600}
-                data={[
-                    {
-                        at: "11:30",
-                        oilTemp: 273.23
-                    }]}
+                data={data}
             >
                 {
                     selectedItems.map((metric, index) => {
@@ -118,9 +109,10 @@ const Chart: React.FC = () => {
                         />
                     })
                 }
+                <Tooltip />
             </LineChart>
         </ResponsiveContainer>
-    </Grid >
+    </Grid>
 }
 
-export default Chart;
+export default Graphs

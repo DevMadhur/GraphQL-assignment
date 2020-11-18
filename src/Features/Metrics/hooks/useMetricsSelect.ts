@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+import { OptionsType, ValueType, ActionMeta } from 'react-select';
 import { Option } from '../types'
 import { useQuery } from "urql";
 import { actions } from '../reducer';
@@ -13,7 +14,7 @@ const useMetricsSelect = () => {
         `
     })
     const { data, error } = result;
-    const [options, setOptions] = useState([]);
+    const [options, setOptions] = useState<OptionsType<Option>>([]);
     useEffect(() => {
         if (error || !data) return;
         const { getMetrics } = data;
@@ -21,7 +22,7 @@ const useMetricsSelect = () => {
     }, [data, error]);
 
     const dispatch = useDispatch();
-    const onSelect = (selected: any, action: any) => dispatch(actions.metricsSelected({
+    const onSelect = (selected: ValueType<Option>, action: ActionMeta<Option>) => dispatch(actions.metricsSelected({
         selected: selected?.map((item: Option) => item.value) || [],
         metricName: action.option?.value || ''
     }));
