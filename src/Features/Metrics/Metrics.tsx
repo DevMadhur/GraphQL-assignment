@@ -1,7 +1,9 @@
 import React from 'react';
+import { Provider } from 'urql';
 import { Grid, makeStyles, Theme } from '@material-ui/core';
 import Select from 'react-select';
 import Chart from '../../components/Chart';
+import client from './api';
 
 const useStyles = makeStyles((theme: Theme) => ({
     container: {
@@ -36,4 +38,10 @@ const Metrics: React.FC = () => {
     </main>
 }
 
-export default Metrics;
+const MetricsWithProvider = () => {
+    return <Provider value={client}>
+        <Metrics />
+    </Provider>
+}
+
+export default MetricsWithProvider;

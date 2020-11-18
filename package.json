@@ -8,7 +8,6 @@
     "@types/react": "^16.9.11",
     "@types/react-dom": "^16.9.3",
     "@types/react-redux": "^7.1.5",
-    "@types/react-select": "^3.0.26",
     "graphql": "^14.5.8",
     "isomorphic-fetch": "^2.2.1",
     "react": "^16.11.0",
@@ -23,8 +22,9 @@
     "redux": "^4.0.4",
     "redux-saga": "^1.1.1",
     "redux-starter-kit": "^1.0.1",
+    "subscriptions-transport-ws": "^0.9.18",
     "typescript": "^3.7.2",
-    "urql": "^1.6.3"
+    "urql": "^1.11.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -42,6 +42,7 @@
     "not op_mini all"
   ],
   "devDependencies": {
+    "@types/react-select": "^3.0.26",
     "@types/recharts": "^1.8.16",
     "@typescript-eslint/eslint-plugin": "^2.7.0",
     "@typescript-eslint/parser": "^2.7.0",
